@@ -42,7 +42,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "${{ github.sha }}"
+          tag_name: "commit-${{ github.sha }}"
           release_name: "Auto Build ${{ github.sha }}"
           body: "Automated build from commit ${{ github.sha }}"
           draft: false
