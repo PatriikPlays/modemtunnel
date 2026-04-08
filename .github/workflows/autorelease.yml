@@ -1,0 +1,57 @@
+name: Auto Build & Release
+
+on:
+  push:
+    branches: ["master"]
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Download CraftOS-PC
+        run: |
+          API_URL="https://api.github.com/repos/MCJack123/craftos2/releases/latest"
+          ASSET_URL=$(curl -s $API_URL \
+            | jq -r '.assets[] | select(.name | test("AppImage")) | .browser_download_url')
+          echo "Downloading AppImage from $ASSET_URL"
+          curl -L -o CraftOS-PC.AppImage "$ASSET_URL"
+          chmod +x CraftOS-PC.AppImage
+          mv CraftOS-PC.AppImage /usr/local/bin/craftos
+          craftos --version
+
+      - name: Run build.sh
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "build-${{ github.sha }}"
+          release_name: "Auto Build ${{ github.sha }}"
+          body: "Automated build from commit ${{ github.sha }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
