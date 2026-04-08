@@ -32,6 +32,7 @@ jobs:
 
       - name: Run build.sh
         run: |
+          cd $GITHUB_WORKSPACE
           chmod +x ./build.sh
           ./build.sh
 
