@@ -5,6 +5,8 @@ if ! command -v craftos >/dev/null 2>&1; then
     exit 1
 fi
 
+pwd
+
 timeout 10s craftos --headless --exec "shell.run('ls');shell.run('/build-headless.lua')" -c="./"
 
 if [ $? -eq 124 ]; then

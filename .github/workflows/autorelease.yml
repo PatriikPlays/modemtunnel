@@ -32,7 +32,7 @@ jobs:
 
       - name: Run build.sh
         run: |
-          pwd
+          ls
           chmod +x ./build.sh
           ./build.sh
 
