@@ -38,6 +38,12 @@ jobs:
           chmod +x ./build.sh
           ./build.sh
 
+      - name: Create Tag
+        uses: rickstaa/action-create-tag@v1.7.2
+        with:
+          tag: release-${{ github.sha }}
+
+
       - name: release
         uses: actions/create-release@v1
         id: create_release
@@ -45,7 +51,7 @@ jobs:
           draft: false
           prerelease: false
           release_name: ${{ github.sha }}
-          tag_name: ${{ github.ref }}
-          body_path: build/*
+          tag_name: release-${{ github.sha }}
+          files: build/*
         env:
           GITHUB_TOKEN: ${{ github.token }}
