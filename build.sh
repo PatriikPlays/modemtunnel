@@ -5,4 +5,9 @@ if ! command -v craftos >/dev/null 2>&1; then
     exit 1
 fi
 
-craftos --headless --exec "shell.run('/build-headless.lua')" -c="./"
+timeout 10s craftos --headless --exec "shell.run('ls');shell.run('/build-headless.lua')" -c="./"
+
+if [ $? -eq 124 ]; then
+    echo "Error: craftos execution timed out after 10 seconds."
+    exit 1
+fi
