@@ -32,7 +32,6 @@ jobs:
 
       - name: Run build.sh
         run: |
-          ls
           chmod +x ./build.sh
           ./build.sh
 
