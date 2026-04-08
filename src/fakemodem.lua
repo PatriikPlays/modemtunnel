@@ -84,7 +84,9 @@ local function fakeModem(modemname, onTransmit)
 
     return {
         pushMessage = function(channel, replyChannel, message, distance)
-            os.queueEvent("modem_message", modemname, channel, replyChannel, message, distance)
+            if openPorts[channel] then
+                os.queueEvent("modem_message", modemname, channel, replyChannel, message, distance)
+            end
         end
     }
 end
