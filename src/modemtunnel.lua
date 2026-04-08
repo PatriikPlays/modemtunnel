@@ -1,5 +1,5 @@
-local fakemodem = require("lib.fakemodem")
-local argparse = require("lib.cc-argparse.src.argparse")
+local fakemodem = require("fakemodem")
+local argparse = require("cc-argparse.src.argparse")
 
 local function parseArgs(...)
   local parser = argparse("modemtunnel", "Secure modem tunnel")
@@ -17,7 +17,7 @@ assert(#args.key == 32, "Encryption key should be 32 characters")
 local modem = assert(args.modem and peripheral.wrap(args.modem) or peripheral.find("modem"), "No modem found.")
 print("Using "..peripheral.getName(modem).." as modem")
 
-local snet = require("lib.snet")(modem, args.port, args.key, nil, 1048576)
+local snet = require("snet")(modem, args.port, args.key, nil, 1048576)
 
 local fm = fakemodem(args.name, function(channel, replyChannel, message)
   snet.send(textutils.serialize({

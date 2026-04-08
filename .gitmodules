@@ -1,5 +1,5 @@
 [submodule "src/lib/cc-argparse"]
-	path = src/lib/cc-argparse
+	path = src/cc-argparse
 	url = https://github.com/Commandcracker/cc-argparse/
 [submodule "ccryptolib"]
 	path = ccryptolib
