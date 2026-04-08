@@ -6,7 +6,7 @@ local function parseArgs(...)
   local parser = argparse("modemtunnel", "Secure modem tunnel")
   parser:argument("name", "Fakemodem name")
   parser:option("-k", "Encryption key"):target("key"):argname("<key>"):count(1)
-  parser:option("-p", "Modem channel", 36356):target("port"):argname("<port>")
+  parser:option("-p", "Modem channel", 36356):target("port"):argname("<port>"):convert(tonumber)
   parser:option("-m", "Modem to tunnel over"):target("modem"):argname("<modem>")
   parser:option("-r", "Repeat rednet between this modem and the tunnel modem"):target("rednetModem"):argname("<rednetModem>")
 
