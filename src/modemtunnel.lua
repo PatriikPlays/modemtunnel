@@ -1,5 +1,6 @@
 local fakemodem = require("fakemodem")
 local argparse = require("cc-argparse.src.argparse")
+local customRednetRepeat = require("rednetrepeat")
 
 local function parseArgs(...)
   local parser = argparse("modemtunnel", "Secure modem tunnel")
@@ -7,6 +8,7 @@ local function parseArgs(...)
   parser:option("-k", "Encryption key"):target("key"):argname("<key>"):count(1)
   parser:option("-p", "Modem channel", 36356):target("port"):argname("<port>")
   parser:option("-m", "Modem to tunnel over"):target("modem"):argname("<modem>")
+  parser:option("-r", "Repeat rednet between this modem and the tunnel modem"):target("rednetModem"):argname("<rednetModem>")
 
   return parser:parse({ ... })
 end
@@ -39,4 +41,6 @@ parallel.waitForAny(snet.run, function()
     end)
     if not s then printError(e) end
   end
-end)
+end, args.rednetModem and function()
+  customRednetRepeat(args.name, args.rednetModem)
+end or nil)
