@@ -29,7 +29,6 @@ jobs:
           curl -L -o CraftOS-PC.AppImage "$ASSET_URL"
           chmod +x CraftOS-PC.AppImage
           mv CraftOS-PC.AppImage /usr/local/bin/craftos
-          craftos --version
 
       - name: Run build.sh
         run: |
