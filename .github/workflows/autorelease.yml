@@ -38,14 +38,14 @@ jobs:
           chmod +x ./build.sh
           ./build.sh
 
-       - name: release
-         uses: actions/create-release@v1
-         id: create_release
-         with:
-           draft: false
-           prerelease: false
-           release_name: ${{ github.sha }}
-           tag_name: ${{ github.ref }}
-           body_path: build/*
-         env:
-           GITHUB_TOKEN: ${{ github.token }}
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.sha }}
+          tag_name: ${{ github.ref }}
+          body_path: build/*
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
