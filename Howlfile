@@ -12,7 +12,7 @@ Tasks:require "main" {
 	startup = "src/modemtunnel.lua",
 	output = "build/modemtunnel.lua",
 	rename = function(file)
-		-- remove src prefix, there has to be a better way to do this but i dont know of it
+		-- remove src prefix
 		local name = file.name:gsub("^src.", "")
 		return name
 	end,
