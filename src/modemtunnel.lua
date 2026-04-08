@@ -16,6 +16,12 @@ end
 local args = parseArgs(...)
 assert(#args.key == 32, "Encryption key should be 32 characters")
 
+if args.rednetModem then
+  assert(peripheral.wrap(args.rednetModem), "Cant find rednet modem.")
+
+  print("Using "..args.rednetModem.." as rednet modem")
+end
+
 local modem = assert(args.modem and peripheral.wrap(args.modem) or peripheral.find("modem"), "No modem found.")
 print("Using "..peripheral.getName(modem).." as modem")
 
