@@ -13,6 +13,12 @@ local function parseArgs(...)
   return parser:parse({ ... })
 end
 
+local function nooploop()
+  while true do
+    os.pullEvent()
+  end
+end
+
 local args = parseArgs(...)
 assert(#args.key == 32, "Encryption key should be 32 characters")
 
@@ -35,7 +41,9 @@ local fm = fakemodem(args.name, function(channel, replyChannel, message)
   }))
 end)
 
-parallel.waitForAny(snet.run, function()
+local fns = {}
+table.insert(fns, snet.run)
+table.insert(fns, function()
   while true do
     local message = snet.receive()
 
@@ -47,6 +55,12 @@ parallel.waitForAny(snet.run, function()
     end)
     if not s then printError(e) end
   end
-end, args.rednetModem and function()
-  customRednetRepeat(args.name, args.rednetModem)
-end or nil)
+end)
+
+if args.rednetModem then
+  table.insert(fns, function()
+    customRednetRepeat(args.name, args.rednetModem)
+  end)
+end
+
+parallel.waitForAny(table.unpack(fns))
